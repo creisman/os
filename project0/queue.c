@@ -62,7 +62,7 @@ void queue_append(queue* q, queue_element* elem) {
   // BUG ONE. If it's empty, set head.
   if (q->head == NULL) {
     q->head = element;
-  } else { // If not empty, set at end.
+  } else {  // If not empty, set at end.
     // Find the last link in the queue.
     queue_link* cur;
     for (cur = q->head; cur->next; cur = cur->next) {}
@@ -143,7 +143,7 @@ static queue_link* queue_reverse_helper(queue* q, queue_link* current) {
     queue_link* prev = queue_reverse_helper(q, current->next);
     prev->next = current;
   }
-  
+
   return current;
 }
 

@@ -57,12 +57,12 @@ int main(int argc, char* argv[]) {
 
   for (i = 0; i < size; i++) {
     assert(!queue_is_empty(q));
-    
+
     int* ret;
     assert(queue_remove(q, (queue_element**) &ret));
     assert(ret == elems[i]);
     assert(size - 1 - i == queue_size(q));
-    
+
     print_queue(q);
   }
 
@@ -89,6 +89,8 @@ static void test_reverse_empty() {
 
   queue_reverse(q);
   assert(queue_is_empty(q));
+
+  free(q);
 }
 
 static void test_reverse_single() {
@@ -104,6 +106,8 @@ static void test_reverse_single() {
   assert(x = *(int*) ret);
 
   assert(queue_is_empty(q));
+
+  free(q);
 }
 
 static void test_reverse() {
@@ -132,6 +136,7 @@ static void test_reverse() {
   assert(queue_is_empty(q));
 
   free(q);
+  free(vals);
 }
 
 static void test_sort_empty() {
@@ -139,6 +144,8 @@ static void test_sort_empty() {
 
   queue_sort(q, compare_elements);
   assert(queue_is_empty(q));
+
+  free(q);
 }
 
 static void test_sort_single() {
@@ -154,6 +161,8 @@ static void test_sort_single() {
   assert(x = *(int*) ret);
 
   assert(queue_is_empty(q));
+
+  free(q);
 }
 
 static void test_sort() {
@@ -176,4 +185,7 @@ static void test_sort() {
     queue_remove(q, (queue_element **) &ret);
     assert(sorted[i] == *(int*) ret);
   }
+
+  free(q);
+  free(sorted);
 }
