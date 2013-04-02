@@ -20,7 +20,7 @@ queuetest: queuetest.o queue.o
 hashtest: hashtest.o hash.o
 	$(CC) $(CFLAGS) $^ -o $@
 
-%.o: %.c %.h
+%.o: %.c %.d
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
