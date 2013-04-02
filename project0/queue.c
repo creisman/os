@@ -18,6 +18,11 @@ struct _queue {
   queue_link* head;
 };
 
+/* This is private helper method to reverse the queue. It takes in the queue
+ * to traverse and the current place in the queue. It returns the node that
+ * should go before the current node. */
+static queue_link* queue_reverse_helper(queue* q, queue_link* current);
+
 queue* queue_create() {
   queue* q = (queue*) malloc(sizeof(queue));
 
@@ -112,5 +117,29 @@ bool queue_apply(queue* q, queue_function qf, queue_function_args* args) {
   }
 
   return true;
+}
+
+void queue_reverse(queue* q) {
+  assert(q != NULL);
+
+  // If empty, do nothing.
+  if (queue_is_empty(q)) {
+    return;
+  }
+
+  queue_link* end = queue_reverse_helper(q, q->head);
+  end->next = NULL;
+}
+
+static queue_link* queue_reverse_helper(queue* q, queue_link* current) {
+  // If the last node, set as head and return.
+  if (current->next == NULL) {
+    q->head = current;
+  } else {
+    queue_link* prev = queue_reverse_helper(q, current->next);
+    prev->next = current;
+  }
+  
+  return current;
 }
 
