@@ -23,6 +23,10 @@ struct _queue {
  * should go before the current node. */
 static queue_link* queue_reverse_helper(queue* q, queue_link* current);
 
+/* A helper function that does mergesort on the passed queue (uses queue_link
+ * to avoid needing to allocate the queue struct). */
+static queue_link* merge_sort(queue_link* q, queue_compare qc);
+
 queue* queue_create() {
   queue* q = (queue*) malloc(sizeof(queue));
 
@@ -143,3 +147,80 @@ static queue_link* queue_reverse_helper(queue* q, queue_link* current) {
   return current;
 }
 
+/* This is merge sort */
+void queue_sort(queue* q, queue_compare qc) {
+  q->head = merge_sort(q->head, qc);
+}
+
+static queue_link* merge_sort(queue_link* q, queue_compare qc) {
+  if (q == NULL || q->next == NULL) {
+    return q;
+  }
+
+  // Split in half efficiently by doing every other.
+  queue_link *evens, *even_cur, *odds, *odd_cur;
+
+  // Initialize the first two.
+  evens = q;
+  even_cur = evens;
+  q = q->next;
+
+  odds = q;
+  odd_cur = odds;
+  q = q->next;
+
+  // Move the rest.
+  int count = 0;
+  while (q != NULL) {
+    if (count % 2 == 0) {
+      even_cur->next = q;
+      even_cur = even_cur->next;
+    } else {
+      odd_cur->next = q;
+      odd_cur = odd_cur->next;
+    }
+
+    q = q->next;
+
+    count++;
+  }
+
+  // Terminate the two lists.
+  even_cur->next = NULL;
+  odd_cur->next = NULL;
+
+
+  // Recursively sort.
+  evens = merge_sort(evens, qc);
+  odds = merge_sort(odds, qc);
+
+  // Merge results.
+  queue_link* cur;
+  while (evens != NULL && odds != NULL) {
+    queue_link* to_add;
+    if (qc(evens->elem, odds->elem) <= 0) {
+      to_add = evens;
+      evens = evens->next;
+    } else {
+      to_add = odds;
+      odds = odds->next;
+    }
+
+    if (q == NULL) {
+      q = to_add;
+      cur = q;
+    } else {
+      cur->next = to_add;
+      cur = cur->next;
+    }
+  }
+
+  // cur will never be null here since evens and odds are never null initially.
+  if (evens == NULL) {
+    cur->next = odds;
+  } else {
+    cur->next = evens;
+  }
+
+  return q;
+}
