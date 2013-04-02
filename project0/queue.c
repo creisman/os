@@ -48,12 +48,19 @@ static queue_link* queue_new_element(queue_element* elem) {
 void queue_append(queue* q, queue_element* elem) {
   assert(q != NULL);
 
-  // Find the last link in the queue.
-  queue_link* cur;
-  for (cur = q->head; cur->next; cur = cur->next) {}
+  queue_element* element = queue_new_element(elem);
 
-  // Append the new link.
-  cur->next = queue_new_element(elem);
+  // BUG ONE. If it's empty, set head.
+  if (q->head == NULL) {
+    q->head = element;
+  } else { // If not empty, set at end.
+    // Find the last link in the queue.
+    queue_link* cur;
+    for (cur = q->head; cur->next; cur = cur->next) {}
+
+    // Append the new link.
+    cur->next = element;
+  }
 }
 
 bool queue_remove(queue* q, queue_element** elem_ptr) {
@@ -68,6 +75,9 @@ bool queue_remove(queue* q, queue_element** elem_ptr) {
   *elem_ptr = q->head->elem;
   old_head = q->head;
   q->head = q->head->next;
+
+  // BUG TWO. old_head is not freed.
+  free(old_head);
 
   return true;
 }
