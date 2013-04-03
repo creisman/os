@@ -115,7 +115,7 @@ static void test_reverse() {
 
   queue* q = queue_create();
 
-  int* vals = malloc(sizeof(int) * SIZE);
+  int* vals = malloc(sizeof(*vals) * SIZE);
   for (int i = 0; i < SIZE; i++) {
     vals[i] = i;
   }

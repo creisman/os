@@ -29,7 +29,7 @@ static void resize();
 hash_table* hash_create(hash_hasher hasher, hash_compare compare) {
   assert(hasher);
   assert(compare);
-  
+
   hash_table* ht = (hash_table*) malloc(sizeof(hash_table));
 
   if (!ht) {
@@ -67,7 +67,7 @@ void hash_insert(hash_table* ht, void* key, void* value,
     entry->key = key;
     entry->value = value;
     entry->next = ht->array[hash % ht->len];
-    
+
     ht->array[hash % ht->len] = entry;
     ht->size = ht->size + 1;
   } else {  // I need to replace the values
@@ -100,7 +100,7 @@ static void resize(hash_table *ht) {
         uint64_t hash = ht->hash(bucket->key);
         hash_entry *entry = bucket;
         bucket = bucket->next;
-        
+
         entry->next = ht->array[hash % ht->len];
         ht->array[hash % ht->len] = entry;
       }
@@ -155,7 +155,7 @@ bool hash_remove(hash_table* ht, const void* key,
   }
 
   // It was the first value.
-  if(prev == NULL) {
+  if (prev == NULL) {
     ht->array[hash % ht->len] = bucket->next;
   } else {  // It was deeper in the list.
     prev->next = bucket->next;
