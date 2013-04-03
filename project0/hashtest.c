@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,6 +72,7 @@ int main(int argc, char* argv[]) {
   char strbuf[kBufferLength];
   for (int i = N - 1; i >= 0; i--) {
     snprintf(strbuf, kBufferLength, "String %d", i);
+    assert(hash_is_present(ht, strbuf));
     if (!hash_lookup(ht, strbuf, (void**) &v)) {
       printf("Entry for %s not found\n", strbuf);
     } else {
@@ -79,10 +81,28 @@ int main(int argc, char* argv[]) {
   }
 
   /* Look up a key that hasn't been inserted: */
+  assert(!hash_is_present(ht, kNotFoundKey));
   if (!hash_lookup(ht, kNotFoundKey, (void**) &v)) {
     printf("Lookup of \"%s\" failed (as expected)\n", kNotFoundKey);
   } else {
     printf("%s -> %" PRIi64 " (unexpected!)\n", kNotFoundKey, *v);
+  }
+
+  /* Third phase: delete some data. */
+  printf("\nDelete phase:\n");
+  for (int i = 0; i < N; i++) {
+    snprintf(strbuf, kBufferLength, "String %d", i);
+    assert(hash_remove(ht, strbuf, (void **) &k, (void **) &v));
+    assert(!hash_is_present(ht, strbuf));
+    assert(strcmp(strbuf, k) == 0);
+    assert(i + N == *v);
+
+    printf("Deleted %s -> %" PRIi64 "\n", k, *v);
+    free(k);
+    free(v);
+
+    // It can't be removed twice!
+    assert(!hash_remove(ht, strbuf, (void **) &k, (void **) &v));
   }
 
   /* Destroy the hash table and free things that we've allocated. Because
