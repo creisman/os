@@ -144,20 +144,20 @@ bool hash_remove(hash_table* ht, const void* key,
 
   hash_entry *bucket = ht->array[hash % ht->len];
 
-  if (ht->comp(bucket->key, key) == 0) {
-    ht->array[hash % ht->len] = bucket->next;
-  } else {
-    hash_entry *prev = bucket;
+  hash_entry *prev = NULL;
+  while (bucket != NULL && ht->comp(bucket->key, key) != 0) {
+    prev = bucket;
     bucket = bucket->next;
-    while (bucket != NULL && ht->comp(bucket->key, key) != 0) {
-      prev = bucket;
-      bucket = bucket->next;
-    }
+  }
 
-    if (bucket == NULL) {
-      return false;
-    }
+  if (bucket == NULL) {
+    return false;
+  }
 
+  // It was the first value.
+  if(prev == NULL) {
+    ht->array[hash % ht->len] = bucket->next;
+  } else {  // It was deeper in the list.
     prev->next = bucket->next;
   }
 
