@@ -4,15 +4,20 @@
 #include <stdlib.h>
 
 #include "hash.h"
-
-/* Using an entry of this type is just a suggestion. You're
- * free to change this. */
+/*
+ * Defines a struct for a linked list of hash entries containing key, value, and
+ * next pointers.
+ */
 typedef struct _hash_entry {
   void* key;
   void* value;
   struct _hash_entry* next;
 } hash_entry;
 
+/*
+ * Defines a struct for a hash table that contains hashing and compare
+ * functions, an array of entries and len, and the number of entries.
+ */
 struct _hash_table {
   hash_compare *comp;
   hash_hasher *hash;
@@ -24,6 +29,9 @@ struct _hash_table {
 static const int DEFAULT_SIZE = 10;
 static const double MAX_LOAD = 2.0;
 
+/*
+ * A private helper method to resize and rehash the table.
+ */
 static void resize();
 
 hash_table* hash_create(hash_hasher hasher, hash_compare compare) {
