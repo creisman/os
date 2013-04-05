@@ -61,11 +61,11 @@ size_t queue_size(queue* q);
    void bar() {
      queue* q = queue_new();
      if (!q) error();
-  
+
      for (int i = 0; i < 10; i++) {
        queue_append(q, q);
      }
-  
+
      size_t count = 0;
      queue_apply(q, count_elements, &count);
      printf("Queue size is %d\n", x);
@@ -83,8 +83,6 @@ typedef bool queue_function(queue_element*, queue_function_args*);
 bool queue_apply(queue* q, queue_function qf,
                  queue_function_args* args);
 
-/* THESE FUNCTIONS ARE NOT IMPLEMENTED */
-
 /*
  * Reverses the elements on the queue in place.
  */
@@ -96,6 +94,9 @@ typedef int queue_compare(queue_element* /* e1* */, queue_element* /* e2* */);  
 
 // Sorts the elements of the given queue in place.
 void queue_sort(queue* q, queue_compare qc);
+
+/* Destroys the queue and optionally frees all elements. */
+void queue_destroy(queue* q, bool free_entries);
 
 #endif  // _QUEUE_H_
 

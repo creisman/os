@@ -65,7 +65,8 @@ void queue_append(queue* q, queue_element* elem) {
   } else {  // If not empty, set at end.
     // Find the last link in the queue.
     queue_link* cur;
-    for (cur = q->head; cur->next; cur = cur->next) {}
+    for (cur = q->head; cur->next; cur = cur->next) {
+    }
 
     // Append the new link.
     cur->next = element;
@@ -222,4 +223,23 @@ static queue_link* merge_sort(queue_link* q, queue_compare qc) {
   }
 
   return q;
+}
+
+void queue_destroy(queue* q, bool free_entries) {
+  queue_link* cur;
+  queue_link* next;
+  if (q != NULL) {
+    cur = q->head;
+    while (cur) {
+      next = cur->next;
+
+      if (free_entries) {
+        free(cur->elem);
+      }
+      free(cur);
+
+      cur = next;
+    }
+    free(q);
+  }
 }
