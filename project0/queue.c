@@ -189,7 +189,6 @@ static queue_link* merge_sort(queue_link* q, queue_compare qc) {
   even_cur->next = NULL;
   odd_cur->next = NULL;
 
-
   // Recursively sort.
   evens = merge_sort(evens, qc);
   odds = merge_sort(odds, qc);

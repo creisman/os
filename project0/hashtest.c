@@ -33,7 +33,8 @@ int main(int argc, char* argv[]) {
   /* Check for correct invocation: */
   if (argc != 2) {
     printf("Usage: %s <N>\n"
-        "Run test inserting a total of N items\n", argv[0]);
+           "Run test inserting a total of N items\n",
+           argv[0]);
     return 1;
   }
   int N = atoi(argv[1]);

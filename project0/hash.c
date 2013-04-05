@@ -46,8 +46,8 @@ hash_table* hash_create(hash_hasher hasher, hash_compare compare) {
   return ht;
 }
 
-void hash_insert(hash_table* ht, void* key, void* value,
-                 void** removed_key_ptr, void** removed_value_ptr) {
+void hash_insert(hash_table* ht, void* key, void* value, void** removed_key_ptr,
+    void** removed_value_ptr) {
   assert(ht);
   assert(key);
   assert(value);
@@ -135,8 +135,8 @@ bool hash_is_present(hash_table* ht, const void* key) {
   return hash_lookup(ht, key, &tmp);
 }
 
-bool hash_remove(hash_table* ht, const void* key,
-                 void** removed_key_ptr, void** removed_value_ptr) {
+bool hash_remove(hash_table* ht, const void* key, void** removed_key_ptr,
+    void** removed_value_ptr) {
   assert(ht);
   assert(key);
 

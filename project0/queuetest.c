@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
   int y = 1;
   int z = 2;
 
-  int* elems[] = {&x, &y, &z, &x};
+  int* elems[] = { &x, &y, &z, &x };
   int size = LENGTH(elems);
 
   int i;
@@ -103,7 +103,7 @@ static void test_reverse_single() {
   int *ret;
   queue_remove(q, (queue_element **) &ret);
 
-  assert(x = *(int*) ret);
+  assert(x == *(int*) ret);
 
   assert(queue_is_empty(q));
 
@@ -158,7 +158,7 @@ static void test_sort_single() {
   int *ret;
   queue_remove(q, (queue_element **) &ret);
 
-  assert(x = *(int*) ret);
+  assert(x == *(int*) ret);
 
   assert(queue_is_empty(q));
 
