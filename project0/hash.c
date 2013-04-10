@@ -26,8 +26,8 @@ struct _hash_table {
   hash_entry **array;
 };
 
-static const int DEFAULT_SIZE = 10;
-static const double MAX_LOAD = 2.0;
+static const int DEFAULT_SIZE = 11;
+static const double MAX_LOAD = 1.0;
 
 /*
  * A private helper method to resize and rehash the table.
@@ -94,7 +94,7 @@ void hash_insert(hash_table* ht, void* key, void* value, void** removed_key_ptr,
 static void resize(hash_table *ht) {
   hash_entry **old = ht->array;
   size_t old_len = ht->len;
-  ht->len = ht->len * 2;
+  ht->len = ht->len * 2 + 1;
   ht->array = (hash_entry **) calloc(ht->len, sizeof(hash_entry*));
   assert(ht->array);
 
