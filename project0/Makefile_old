@@ -1,11 +1,11 @@
 SUFFIXES+=.d
 NODEPS=clean
 CC=gcc
-CFLAGS=-std=gnu99 -g -Wall -O0 -D_GNU_SOURCE=1
+CFLAGS=-std=gnu99 -g -Wall -O0
 SRCS=$(shell find . -maxdepth 1 -name "*.c")
 DEPFILES=$(patsubst %.c, %.d, $(SRCS))
 OBJS=queuetest.o hashtest.o queue.o hash.o
-PROGRAMS=queuetest hashtest hashtest.exe queuetest.exe
+PROGRAMS=queuetest hashtest
 
 default: all
 
