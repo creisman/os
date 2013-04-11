@@ -13,6 +13,8 @@ static void test_sort_empty();
 static void test_sort_single();
 static void test_sort();
 
+static void test_destroy();
+
 // Print out the index and the value of each element.
 bool show_one(queue_element* elem, queue_function_args* args) {
   printf("Item %d == %d\n", *(int*) args, *(int*) elem);
@@ -80,6 +82,8 @@ int main(int argc, char* argv[]) {
   test_sort_empty();
   test_sort_single();
   test_sort();
+
+  test_destroy();
 
   return 0;
 }
@@ -188,4 +192,40 @@ static void test_sort() {
 
   free(q);
   free(sorted);
+}
+
+/* Must be run under Valgrind to be helpful. */
+static void test_destroy() {
+  const int SIZE = 20;
+
+  int* vals = malloc(sizeof(*vals) * SIZE);
+  for (int i = 0; i < SIZE; i++) {
+    vals[i] = i;
+  }
+
+  queue *q = queue_create();
+
+  for (int i = 0; i < SIZE; i++) {
+    queue_append(q, (queue_element*) (vals + i));
+  }
+
+  queue_destroy(q, false);
+  free(vals);
+  vals = NULL;
+
+  int **pts = malloc(sizeof(*pts) * SIZE);
+  for (int i = 0; i < SIZE; i++) {
+    int *pt = malloc(sizeof(pt));
+    pts[i] = pt;
+  }
+
+  q = queue_create();
+
+  for (int i = 0; i < SIZE; i++) {
+    queue_append(q, (queue_element*) pts[i]);
+  }
+
+  queue_destroy(q, true);
+  free(pts);
+  pts = NULL;
 }

@@ -95,6 +95,7 @@ int main(int argc, char* argv[]) {
     snprintf(strbuf, kBufferLength, "String %d", i);
     assert(hash_remove(ht, strbuf, (void **) &k, (void **) &v));
     assert(!hash_is_present(ht, strbuf));
+    assert(!hash_lookup(ht, kNotFoundKey, (void**) &v));
     assert(strcmp(strbuf, k) == 0);
     assert(i + N == *v);
 
